@@ -64,8 +64,8 @@ resource "azurerm_virtual_machine" "reform-nonprod" {
   }
 
   os_profile {
-    computer_name  = "${var.vm_name}"
-    admin_username = "${var.username}"
+    computer_name  = "${element(data.template_file.server_name.*.rendered, count.index)}"
+    admin_username = "${var.admin_username}"
     admin_password = "${random_string.password.result}"
   }
 
@@ -77,7 +77,7 @@ resource "azurerm_virtual_machine" "reform-nonprod" {
     disable_password_authentication = true
 
     ssh_keys {
-      path     = "/home/${var.username}/.ssh/authorized_keys"
+      path     = "/home/${var.admin_username}/.ssh/authorized_keys"
       key_data = "${var.ssh_key}"
     }
   }
@@ -111,7 +111,7 @@ resource "azurerm_virtual_machine_extension" "script" {
 
   settings = <<SETTINGS
     {
-        "commandToExecute": "iptables -t nat -A PREROUTING -p tcp --dport 444 -j REDIRECT --to-ports 22; iptables-save > /etc/sysconfig/iptables"
+        "commandToExecute": "iptables -t nat -A PREROUTING -p tcp --dport ${var.port} -j REDIRECT --to-ports 22; iptables-save > /etc/sysconfig/iptables"
     }
 SETTINGS
 }

@@ -13,11 +13,6 @@ variable "location" {
 variable "subnet_id" {}
 variable "avset_id" {}
 variable "ssh_key" {}
-
-variable "username" {
-  default = "dojenkins"
-}
-
 variable "storage_account" {}
 variable "diagnostics_storage_account" {}
 
@@ -58,3 +53,5 @@ variable "azure_subscription_id" {}
 variable "resource_group_name" {}
 variable "vnet" {}
 variable "subnet" {}
+variable "port" {}
+variable "admin_username" {}
