@@ -27,8 +27,8 @@ resource "azurerm_network_interface" "reform-nonprod" {
 resource "random_string" "password" {
   length  = 20
   special = true
-  lifecycle {
-    ignore_changes = ["length","special"]
+    lifecycle {
+    ignore_changes = ["*"]
   }
 }
 
